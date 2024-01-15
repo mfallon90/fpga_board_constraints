@@ -4,13 +4,19 @@ set_property CONFIG_VOLTAGE 3.3 [current_design]
 ####################################################################################################################
 #                                               CLOCK 100MHz                                                       #
 ####################################################################################################################
-set_property -dict { PACKAGE_PIN "H4"    IOSTANDARD LVCMOS33       SLEW FAST} [get_ports { clk }]     ;                 # IO_L12P_T1_MRCC_35            Sch = CLK1
-create_clock -period 10.000 -name clk -waveform {0.000 5.000} -add [get_ports clk]
+set_property -dict { PACKAGE_PIN "H4"    IOSTANDARD LVCMOS33       SLEW FAST} [get_ports { sys_clk }]     ;                 # IO_L12P_T1_MRCC_35            Sch = CLK1
+create_clock -period 10.000 -name sys_clk -waveform {0.000 5.000} -add [get_ports sys_clk]
+
+####################################################################################################################
+#                                               ETH RX CLOCK 125MHz                                                #
+####################################################################################################################
+set_property -dict { PACKAGE_PIN "W19"    IOSTANDARD LVCMOS33       SLEW FAST} [get_ports { rgmii_rx_clk }]     ;                 # IO_L12P_T1_MRCC_35            Sch = CLK1
+create_clock -period 8.000 -name rgmii_rx_clk -waveform {0.000 4.000} -add [get_ports rgmii_rx_clk]
 
 ####################################################################################################################
 #                                                   RESET - S3                                                     #
 ####################################################################################################################
-# set_property -dict { PACKAGE_PIN "M2"    IOSTANDARD LVCMOS33   SLEW FAST   } [get_ports { RESET }]    ;                 # IO_L16N_T2_35                 Sch = RESET
+set_property -dict { PACKAGE_PIN "M2"    IOSTANDARD LVCMOS33   SLEW FAST   } [get_ports { sys_rst }]    ;                 # IO_L16N_T2_35                 Sch = RESET
 
 ####################################################################################################################
 #                                               FT2232H Signals                                                    #
@@ -96,9 +102,9 @@ create_clock -period 10.000 -name clk -waveform {0.000 5.000} -add [get_ports cl
 #set_property -dict { PACKAGE_PIN "R21"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { SPI_DQ[3] }]    ;              # IO_L2N_T0_D03_14              Sch = SPI_DQ3
 #set_property -dict { PACKAGE_PIN "L12"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { SPI_SCK }]      ;              # CCLK_0                        Sch = SPI_SCK
 
-set_property -dict { PACKAGE_PIN "T19"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { SPI_CSn }]     ;              # IO_L6P_T0_FCS_B_14            Sch = SPI_CS_N
-set_property -dict { PACKAGE_PIN "P22"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { SPI_MOSI }]    ;              # IO_L1P_T0_D00_MOSI_14         Sch = SPI_DQ0
-set_property -dict { PACKAGE_PIN "R22"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { SPI_MISO }]    ;              # IO_L1N_T0_D01_DIN_14          Sch = SPI_DQ1
+# set_property -dict { PACKAGE_PIN "T19"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { SPI_CSn }]     ;              # IO_L6P_T0_FCS_B_14            Sch = SPI_CS_N
+# set_property -dict { PACKAGE_PIN "P22"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { SPI_MOSI }]    ;              # IO_L1P_T0_D00_MOSI_14         Sch = SPI_DQ0
+# set_property -dict { PACKAGE_PIN "R22"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { SPI_MISO }]    ;              # IO_L1N_T0_D01_DIN_14          Sch = SPI_DQ1
 
 ####################################################################################################################
 #                                               Micro SD                                                           #
@@ -112,10 +118,10 @@ set_property -dict { PACKAGE_PIN "R22"    IOSTANDARD LVCMOS33    SLEW FAST} [get
 ####################################################################################################################
 #                                               Push Buttons                                                       #
 ####################################################################################################################
-# set_property -dict { PACKAGE_PIN "P20"  IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { sw_in[0] }];                     # IO_0_14                       Sch = SW0
-# set_property -dict { PACKAGE_PIN "P19"  IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { sw_in[1] }];                     # IO_L5P_T0_D06_14              Sch = SW1
-# set_property -dict { PACKAGE_PIN "P17"  IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { sw_in[2] }];                     # IO_L21N_T3_DQS_A06_D22_14     Sch = SW2
-# set_property -dict { PACKAGE_PIN "N17"  IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { sw_in[3] }];                     # IO_L21P_T3_DQS_14             Sch = SW3
+set_property -dict { PACKAGE_PIN "P20"  IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { push_button[0] }];                     # IO_0_14                       Sch = SW0
+set_property -dict { PACKAGE_PIN "P19"  IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { push_button[1] }];                     # IO_L5P_T0_D06_14              Sch = SW1
+set_property -dict { PACKAGE_PIN "P17"  IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { push_button[2] }];                     # IO_L21N_T3_DQS_A06_D22_14     Sch = SW2
+set_property -dict { PACKAGE_PIN "N17"  IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { push_button[3] }];                     # IO_L21P_T3_DQS_14             Sch = SW3
 
 ####################################################################################################################
 #                                               leds                                                               #
@@ -132,30 +138,30 @@ set_property -dict { PACKAGE_PIN "M16"   IOSTANDARD LVCMOS33    SLEW FAST} [get_
 ####################################################################################################################
 #                                               DIP Switches                                                       #
 ####################################################################################################################
-# set_property -dict { PACKAGE_PIN "B21"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_sw[0] }];                   # IO_L21P_T3_DQS_16             Sch = DP0
-# set_property -dict { PACKAGE_PIN "A21"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_sw[1] }];                   # IO_L21N_T3_DQS_16             Sch = DP1
-# set_property -dict { PACKAGE_PIN "E22"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_sw[2] }];                   # IO_L22P_T3_16                 Sch = DP2
-# set_property -dict { PACKAGE_PIN "D22"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_sw[3] }];                   # IO_L22N_T3_16                 Sch = DP3
-# set_property -dict { PACKAGE_PIN "E21"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_sw[4] }];                   # IO_L23P_T3_16                 Sch = DP4
-# set_property -dict { PACKAGE_PIN "D21"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_sw[5] }];                   # IO_L23N_T3_16                 Sch = DP5
-# set_property -dict { PACKAGE_PIN "G21"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_sw[6] }];                   # IO_L24P_T3_16                 Sch = DP6
-# set_property -dict { PACKAGE_PIN "G22"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_sw[7] }];                   # IO_L24N_T3_16                 Sch = DP7
+set_property -dict { PACKAGE_PIN "B21"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_switch[0] }];                   # IO_L21P_T3_DQS_16             Sch = DP0
+set_property -dict { PACKAGE_PIN "A21"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_switch[1] }];                   # IO_L21N_T3_DQS_16             Sch = DP1
+set_property -dict { PACKAGE_PIN "E22"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_switch[2] }];                   # IO_L22P_T3_16                 Sch = DP2
+set_property -dict { PACKAGE_PIN "D22"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_switch[3] }];                   # IO_L22N_T3_16                 Sch = DP3
+set_property -dict { PACKAGE_PIN "E21"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_switch[4] }];                   # IO_L23P_T3_16                 Sch = DP4
+set_property -dict { PACKAGE_PIN "D21"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_switch[5] }];                   # IO_L23N_T3_16                 Sch = DP5
+set_property -dict { PACKAGE_PIN "G21"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_switch[6] }];                   # IO_L24P_T3_16                 Sch = DP6
+set_property -dict { PACKAGE_PIN "G22"   IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { dip_switch[7] }];                   # IO_L24N_T3_16                 Sch = DP7
 
 ####################################################################################################################
 #                                               Seven Segment                                                      #
 ####################################################################################################################
-# set_property -dict { PACKAGE_PIN "N3"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { enable[0] }];                   # IO_L19N_T3_VREF_35            Sch = 7_SEG1_EN
-# set_property -dict { PACKAGE_PIN "R1"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { enable[1] }];                   # IO_L20P_T3_35                 Sch = 7_SEG2_EN
-# set_property -dict { PACKAGE_PIN "P1"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { enable[2] }];                   # IO_L20N_T3_35                 Sch = 7_SEG3_EN
-# set_property -dict { PACKAGE_PIN "L4"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { enable[3] }];                   # IO_L18N_T2_35                 Sch = 7_SEG4_EN
-# set_property -dict { PACKAGE_PIN "P4"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_segment[0] }];            # IO_L21N_T3_DQS_35             Sch = 7SEG_0
-# set_property -dict { PACKAGE_PIN "N4"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_segment[1] }];            # IO_L19P_T3_35                 Sch = 7SEG_1
-# set_property -dict { PACKAGE_PIN "M3"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_segment[2] }];            # IO_L16P_T2_35                 Sch = 7SEG_2
-# set_property -dict { PACKAGE_PIN "M5"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_segment[3] }];            # IO_L23N_T3_35                 Sch = 7SEG_3
-# set_property -dict { PACKAGE_PIN "L5"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_segment[4] }];            # IO_L18P_T2_35                 Sch = 7SEG_4
-# set_property -dict { PACKAGE_PIN "L6"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_segment[5] }];            # IO_25_35                      Sch = 7SEG_5
-# set_property -dict { PACKAGE_PIN "M6"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_segment[6] }];            # IO_L23P_T3_35                 Sch = 7SEG_6
-# set_property -dict { PACKAGE_PIN "P5"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_segment[7] }];            # IO_L21P_T3_DQS_35             Sch = 7SEG_7
+set_property -dict { PACKAGE_PIN "N3"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_en[0] }];                   # IO_L19N_T3_VREF_35            Sch = 7_SEG1_EN
+set_property -dict { PACKAGE_PIN "R1"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_en[1] }];                   # IO_L20P_T3_35                 Sch = 7_SEG2_EN
+set_property -dict { PACKAGE_PIN "P1"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_en[2] }];                   # IO_L20N_T3_35                 Sch = 7_SEG3_EN
+set_property -dict { PACKAGE_PIN "L4"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_en[3] }];                   # IO_L18N_T2_35                 Sch = 7_SEG4_EN
+set_property -dict { PACKAGE_PIN "P4"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_led[0] }];            # IO_L21N_T3_DQS_35             Sch = 7SEG_0
+set_property -dict { PACKAGE_PIN "N4"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_led[1] }];            # IO_L19P_T3_35                 Sch = 7SEG_1
+set_property -dict { PACKAGE_PIN "M3"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_led[2] }];            # IO_L16P_T2_35                 Sch = 7SEG_2
+set_property -dict { PACKAGE_PIN "M5"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_led[3] }];            # IO_L23N_T3_35                 Sch = 7SEG_3
+set_property -dict { PACKAGE_PIN "L5"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_led[4] }];            # IO_L18P_T2_35                 Sch = 7SEG_4
+set_property -dict { PACKAGE_PIN "L6"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_led[5] }];            # IO_25_35                      Sch = 7SEG_5
+set_property -dict { PACKAGE_PIN "M6"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_led[6] }];            # IO_L23P_T3_35                 Sch = 7SEG_6
+set_property -dict { PACKAGE_PIN "P5"    IOSTANDARD LVCMOS33    SLEW FAST} [get_ports { seven_seg_led[7] }];            # IO_L21P_T3_DQS_35             Sch = 7SEG_7
 
 ####################################################################################################################
 #                                               24AA02E48T EEPROM                                                  #
@@ -199,7 +205,7 @@ set_property -dict { PACKAGE_PIN "M16"   IOSTANDARD LVCMOS33    SLEW FAST} [get_
 ####################################################################################################################
 set_property -dict  {PACKAGE_PIN  "P16"   IOSTANDARD  LVCMOS33   SLEW FAST } [get_ports {mdio}]         ;               # IO_L24P_T3_A01_D17_14         Sch = ETH_MDIO
 set_property -dict  {PACKAGE_PIN  "R19"   IOSTANDARD  LVCMOS33   SLEW FAST } [get_ports {mdc}]          ;               # IO_L5N_T0_D07_14              Sch = ETH_MDC
-set_property -dict  {PACKAGE_PIN  "R14"   IOSTANDARD  LVCMOS33   SLEW FAST } [get_ports {phy_reset_n}]  ;               # IO_L19N_T3_A09_D25_VREF_14    Sch = ETH_RESET_B
+set_property -dict  {PACKAGE_PIN  "R14"   IOSTANDARD  LVCMOS33   SLEW FAST } [get_ports {phy_rst_n}]  ;               # IO_L19N_T3_A09_D25_VREF_14    Sch = ETH_RESET_B
 set_property -dict  {PACKAGE_PIN  "V18"   IOSTANDARD  LVCMOS33   SLEW FAST } [get_ports {rgmii_tx_data[0]}]       ;               # IO_L14P_T2_SRCC_14            Sch = ETH_rgmii_tx_data0
 set_property -dict  {PACKAGE_PIN  "U18"   IOSTANDARD  LVCMOS33   SLEW FAST } [get_ports {rgmii_tx_data[1]}]       ;               # IO_L18N_T2_A11_D27_14         Sch = ETH_rgmii_tx_data1
 set_property -dict  {PACKAGE_PIN  "V17"   IOSTANDARD  LVCMOS33   SLEW FAST } [get_ports {rgmii_tx_data[2]}]       ;               # IO_L16P_T2_CSI_B_14           Sch = ETH_rgmii_tx_data2
@@ -338,3 +344,4 @@ set_property -dict  {PACKAGE_PIN  "W19"   IOSTANDARD  LVCMOS33 } [get_ports {rgm
 # set_property -dict  { PACKAGE_PIN "F14"   IOSTANDARD LVCMOS33   SLEW FAST } [get_ports {P13[37]}];                      # IO_L1N_T0_16                  Sch = GPIO_39_N
 # set_property -dict  { PACKAGE_PIN "F16"   IOSTANDARD LVCMOS33   SLEW FAST } [get_ports {P13[38]}];                      # IO_L2P_T0_16                  Sch = GPIO_40_P
 # set_property -dict  { PACKAGE_PIN "E17"   IOSTANDARD LVCMOS33   SLEW FAST } [get_ports {P13[39]}];                      # IO_L2N_T0_16                  Sch = GPIO_40_N
+#
