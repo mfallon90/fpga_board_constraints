@@ -14,6 +14,14 @@ set_property -dict { PACKAGE_PIN "W19"    IOSTANDARD LVCMOS33       SLEW FAST} [
 create_clock -period 8.000 -name rgmii_rx_clk -waveform {0.000 4.000} -add [get_ports rgmii_rx_clk]
 
 ####################################################################################################################
+#                                                 CDC Constraints                                                  #
+####################################################################################################################
+set_property ASYNC_REG true [get_cells {sync_rd_ptr0}]
+set_property ASYNC_REG true [get_cells {sync_wr_ptr0}]
+set_max_delay -datapath_only -from [get_cells {rd_ptr_gry} -to [get_cells {sync_rd_prt0}] 8.000
+set_max_delay -datapath_only -from [get_cells {wr_ptr_gry} -to [get_cells {sync_wr_prt0}] 8.000
+
+####################################################################################################################
 #                                                   RESET - S3                                                     #
 ####################################################################################################################
 set_property -dict { PACKAGE_PIN "M2"    IOSTANDARD LVCMOS33   SLEW FAST   } [get_ports { sys_rst }]    ;                 # IO_L16N_T2_35                 Sch = RESET
